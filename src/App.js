@@ -1,39 +1,117 @@
 import React, { useEffect, useState } from "react";
 import Pokemon  from './components/PokeDiv/pokemon'
-import { DivApp } from './AppStyle'
+import { DivBody, DivMain } from './AppStyle'
+import { Pagination } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import * as ReactDOM from 'react-dom';
 
-function App() {
-  const [quantidadePokemon, setQuantidadePokemon] = useState();
+function App () {
+  const [ activePage, SetActivePage ] = useState(1);
+  const [ numberInicio , setNumberInicio ] = useState(1);
+  const [ numberFinal , setNumberFinal ] = useState(10);
+  const [pageStart, setPageStart] = useState(1);
+  const [pageEnd, setPageEnd] = useState(18);
 
-  useEffect(()=>{
-    const url = "https://pokeapi.co/api/v2/pokemon";
-    const fetchData = async () => {
-        try {
-            let arrayPokemon = Array();
-            const response = await fetch(url);
-            const json = await response.json();
-            arrayPokemon = json.results;
-            setQuantidadePokemon(arrayPokemon.length);
-        } catch (error) {
-            console.log("error", error);
+  function changePagesFinal(){
+      switch (numberFinal){
+          case 10:
+              setNumberFinal(numberFinal + 10);
+              setNumberInicio(10);
+              break;
+          case 50:
+              return;
+              break;
+          default:
+              setNumberFinal(numberFinal + 10);
+              setNumberInicio(numberInicio + 10);
+      }
+  }
+
+  function changePagesInicio(){
+      switch (numberInicio){
+          case 10:
+              setNumberInicio(1);
+              setNumberFinal(numberFinal - 10);
+              break;
+          case 1:
+              return;
+              break;
+          default:
+              setNumberFinal(numberFinal - 10);
+              setNumberInicio(numberInicio - 10);
+      }
+  }
+
+  function changeActivePage( numberPage ){
+      if(numberFinal === numberPage){
+          if(numberFinal != 50){
+            SetActivePage(numberPage);
+            changePagesFinal(numberPage);
+            setPageStart(((numberPage-1)*18) + 1);
+            setPageEnd(numberPage * 18);
+          }
+          else{
+            SetActivePage(numberPage);
+            changePagesFinal(numberPage);
+            setPageStart(((numberPage-1)*18) + 1);
+            setPageEnd((numberPage * 18) - 2);
         }
-    };
+      }else if(numberInicio === numberPage){
+          SetActivePage(numberPage);
+          changePagesInicio(numberPage);
+          setPageStart(((numberPage-1)*18) + 1);
+          setPageEnd(numberPage * 18);
+      }else{
+          SetActivePage(numberPage);
+          setPageStart(((numberPage-1)*18) + 1);
+          setPageEnd(numberPage * 18);
+      }
+          
+  }
 
-    fetchData();
   
-  }, [])
+  let items = [];
+
+  for(let number = numberInicio; number <= numberFinal ; number ++){
+      items.push(
+          <Pagination.Item key={number} active={number === activePage} onClick={(e) => changeActivePage(number) }>
+              {number}
+          </Pagination.Item>
+      )
+  }
+  useEffect(() =>{
+      if(activePage % 10 === 0){
+          for(let number = numberInicio; number <= numberFinal ; number ++){
+              items.push(
+                  <Pagination.Item key={number} active={number === activePage} onClick={(e) => changeActivePage(number) }>
+                      {number}
+                  </Pagination.Item>
+              )
+          }
+      }
+      renderPokemon()
+  }, [activePage])
 
   function renderPokemon(){
     let rows = [];
-    for(let i = 0; i < quantidadePokemon ; i++){
-      rows.push(<Pokemon pokemon={"murkrow"} ></Pokemon>);
+    for(let i = pageStart; i <= pageEnd; i++){
+      rows.push(<Pokemon pokemonNumber={i} ></Pokemon>);
     }
     return  rows;
   }
   return (
-  <DivApp>
-    {renderPokemon()}
-  </DivApp>
+    <DivBody>
+      <DivMain>
+        {renderPokemon()}
+      </DivMain>
+      <Pagination>
+            <Pagination.First />
+            <Pagination.Prev />
+            {items}
+            <Pagination.Next />
+            <Pagination.Last />
+        </Pagination>
+    </DivBody>
   );
 }
 
