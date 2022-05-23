@@ -3,7 +3,6 @@ import Pokemon  from './components/PokeDiv/pokemon'
 import { DivBody, DivMain } from './AppStyle'
 import { Pagination } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as ReactDOM from 'react-dom';
 
 function App () {
   const [ activePage, SetActivePage ] = useState(1);
@@ -20,7 +19,6 @@ function App () {
               break;
           case 50:
               return;
-              break;
           default:
               setNumberFinal(numberFinal + 10);
               setNumberInicio(numberInicio + 10);
@@ -35,7 +33,6 @@ function App () {
               break;
           case 1:
               return;
-              break;
           default:
               setNumberFinal(numberFinal - 10);
               setNumberInicio(numberInicio - 10);
@@ -44,7 +41,7 @@ function App () {
 
   function changeActivePage( numberPage ){
       if(numberFinal === numberPage){
-          if(numberFinal != 50){
+          if(numberFinal !== 50){
             SetActivePage(numberPage);
             changePagesFinal(numberPage);
             setPageStart(((numberPage-1)*18) + 1);
