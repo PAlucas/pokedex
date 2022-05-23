@@ -6,7 +6,8 @@ import Pokemodal from "./Pokemodal/Pokemodal";
 export default function Pokemon( props ) {
     const [showModal , setShowModal] = useState(false);
     const [image, setImage] = useState(); 
-    const [eachPokemon, setEachPokemon] = useState("black");
+    const [eachPokemon, setEachPokemon] = useState();
+    const [eachPokemonColor, setEachPokemonColor] = useState("black");
     const [loading, setLoading] = useState(true);
 
     const { pokemonNumber } = props;
@@ -27,7 +28,8 @@ export default function Pokemon( props ) {
         Promise.all([images(),species()])
         .then((res) => {
             setImage(res[0].url);
-            setEachPokemon(res[1].color.name);
+            setEachPokemon(res[1]);
+            setEachPokemonColor(res[1].color.name);
         })
         .then(() => setLoading(false))
         .catch((e) => console.log("erro"));
@@ -46,10 +48,10 @@ export default function Pokemon( props ) {
         <div>
             {
                 !loading?(
-                    <PokeDiv colorDiv={eachPokemon} onClick={(e) => controlModal()}>
+                    <PokeDiv colorDiv={eachPokemonColor} onClick={(e) => controlModal()}>
                         <img src={image}>
                         </img>
-                        <Pokemodal pokemonNumber={pokemonNumber} show={showModal}></Pokemodal>
+                        <Pokemodal pokemonInfo={eachPokemon} show={showModal} pokemonImage={image}></Pokemodal>
                     </PokeDiv>
                 ):(
                     <PokeDiv>

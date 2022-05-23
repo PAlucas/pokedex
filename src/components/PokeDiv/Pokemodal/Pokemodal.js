@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { ContentDiv, HeaderDiv, ModalDiv, PokeinfoBasic, PokemonImg, PokemonPart } from "./PokemodalStyle";
 
-export default function Pokemodal( props ){
-    const [pokemon, setPokemon] = useState("black");
-    const [loading, setLoading] = useState(true);
-
-    const { pokemonNumber } = props;
-    const { show } = props;
-    useEffect(()=>{
-        setLoading(true);
-
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonNumber}`)
-        .then((response) => response.json())
-        .then((response) => setPokemon(response));
-    }, [pokemonNumber])
-
-
+export default function Pokemodal({pokemonInfo, show, pokemonImage}){
+    let pokeGroup1 = (pokemonInfo["egg_groups"][1]) ? pokemonInfo["egg_groups"][1].name: "";
     return(
-        <div>
-            {console.log(show)}
-        </div>
+        <>{ show &&(
+            <ModalDiv >
+                <ContentDiv>
+                    <HeaderDiv>
+                        <h1>{pokemonInfo.name}</h1>
+                    </HeaderDiv>
+                    <PokemonPart>
+                        <PokemonImg src={pokemonImage}></PokemonImg>
+                        <PokeinfoBasic>
+                            <p><span style={{"fontWeight":"bold"}}>Grupos:</span> {pokemonInfo["egg_groups"][0].name} {pokeGroup1}</p>
+                            <p>{console.log(pokemonInfo)}</p>
+                        </PokeinfoBasic>
+                    </PokemonPart>
+                </ContentDiv>
+            </ModalDiv>
+        )
+        }
+        </>
     );
 }
