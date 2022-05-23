@@ -65,7 +65,7 @@ function App () {
       }
           
   }
-
+  console.log("change");
   
   let items = [];
 
