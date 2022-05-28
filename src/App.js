@@ -1,15 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Pokemon  from './components/PokeDiv/pokemon'
-import { DivBody, DivMain } from './AppStyle'
+import { DivBody, DivLupa, DivMain } from './AppStyle'
 import { Pagination } from 'react-bootstrap'
+import SearchModal from './components/PokeSearch'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App () {
   const [ activePage, SetActivePage ] = useState(1);
   const [ numberInicio , setNumberInicio ] = useState(1);
   const [ numberFinal , setNumberFinal ] = useState(10);
-  const [pageStart, setPageStart] = useState(1);
-  const [pageEnd, setPageEnd] = useState(18);
+  const [ pageStart, setPageStart ] = useState(1);
+  const [ pageEnd, setPageEnd ] = useState(18);
+  const [ modalSearch, setmodalSearch ] = useState(false);
+
+  function pageFirst(){
+    setNumberFinal(10);
+    setNumberInicio(1);
+    SetActivePage(1);
+    setPageStart(1);
+    setPageEnd(18);
+  }
+
+  function pageLast(){
+    setNumberInicio(40);
+    setNumberFinal(50);
+    SetActivePage(50);
+    setPageStart(883);
+    setPageEnd(898);
+  }
 
   function changePagesFinal(){
       switch (numberFinal){
@@ -65,7 +83,6 @@ function App () {
       }
           
   }
-  console.log("change");
   
   let items = [];
 
@@ -76,6 +93,7 @@ function App () {
           </Pagination.Item>
       )
   }
+
   useEffect(() =>{
       if(activePage % 10 === 0){
           for(let number = numberInicio; number <= numberFinal ; number ++){
@@ -96,17 +114,27 @@ function App () {
     }
     return  rows;
   }
+
+  function showModalSearch(){
+    setmodalSearch((prev) => !prev);
+  }
+
   return (
     <DivBody>
+        <SearchModal show = {modalSearch} setShow = {setmodalSearch}/>
+        <DivLupa onClick={() => showModalSearch()}>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+        </DivLupa>
       <DivMain>
         {renderPokemon()}
       </DivMain>
       <Pagination>
-            <Pagination.First />
-            <Pagination.Prev />
+            <Pagination.First  onClick={() => pageFirst()}/>
             {items}
-            <Pagination.Next />
-            <Pagination.Last />
+            <Pagination.Last onClick={() => pageLast()}/>
         </Pagination>
     </DivBody>
   );

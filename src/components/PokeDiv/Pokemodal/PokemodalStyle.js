@@ -39,10 +39,16 @@ export const ContentDiv = styled.div`
     flex-direction: column;
     height: 70vh;
     width: 40vw;
+    min-width: 470px;
     background-color: white;
     border-radius: 20px;
     animation-name: ${modalAppear};
     animation-duration: 1s;
+    @media (max-width: 600px){
+        width: 98vw;
+        min-width: 0;
+        height: 80vh;
+    }
 `;
 
 export const HeaderDiv = styled.header`
@@ -56,15 +62,29 @@ export const PokemonPart = styled.div`
     display: flex;
     height: 40%;
 `;
+export const PokemonPartFooter = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const PokemonDivInfoFooter = styled.div`
+    width: 50%;
+`;
 
 export const PokemonImg = styled.img`
     height: 100%;
     animation-name: ${imgRotate};
     animation-duration: 3s;
+    @media (max-width: 600px){
+        height: 70%;
+        width: calc(30vh);
+        min-width: 0;
+    }
 `;
 
 export const PokeinfoBasic = styled.div`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    justify-content: center;
 `;
