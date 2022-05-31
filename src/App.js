@@ -12,6 +12,7 @@ function App () {
   const [ pageStart, setPageStart ] = useState(1);
   const [ pageEnd, setPageEnd ] = useState(18);
   const [ modalSearch, setmodalSearch ] = useState(false);
+  const [ searchPokemon, setSearchPokemon ] = useState(false);
 
   function pageFirst(){
     setNumberFinal(10);
@@ -118,10 +119,10 @@ function App () {
   function showModalSearch(){
     setmodalSearch((prev) => !prev);
   }
-
+  console.log(searchPokemon);
   return (
     <DivBody>
-        <SearchModal show = {modalSearch} setShow = {setmodalSearch}/>
+        <SearchModal show = {modalSearch} setShow = {setmodalSearch} setPokemon={setSearchPokemon}/>
         <DivLupa onClick={() => showModalSearch()}>
             
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
