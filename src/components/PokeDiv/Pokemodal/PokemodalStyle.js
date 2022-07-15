@@ -53,6 +53,7 @@ export const ContentDiv = styled.div`
 
 export const HeaderDiv = styled.header`
     display: flex;
+    justify-content: space-between;
     margin: 0 10px;
     padding: 5px;
     border-bottom: 1px solid #ccc;
@@ -88,3 +89,9 @@ export const PokeinfoBasic = styled.div`
     flex-direction: column;
     justify-content: center;
 `;
+
+export const CloseModalButton = styled.button`
+    border: 0px;
+    cursor: pointer;
+    background-color: white;
+`

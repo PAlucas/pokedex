@@ -35,23 +35,26 @@ export default function Pokemon( props ) {
         .catch((e) => console.log("erro"));
     }, [pokemonNumber])
 
-    function controlModal(){
-        if(showModal == true){
+    function controlModalAbrir(){
+        setShowModal(true);
+    }
+
+    function controlModalFechar(){
+        if(showModal === true){
             setShowModal(false);
-        }else{
+        } else {
             setShowModal(true);
         }
     }
-
     
     return(
         <div>
             {
                 !loading?(
-                    <PokeDiv colorDiv={eachPokemonColor} onClick={(e) => controlModal()}>
-                        <img src={image}>
+                    <PokeDiv colorDiv={eachPokemonColor} >
+                        <img src={image} onClick={() =>controlModalFechar()}>
                         </img>
-                        <Pokemodal pokemonInfo={eachPokemon} show={showModal} pokemonImage={image}></Pokemodal>
+                        <Pokemodal pokemonInfo={eachPokemon} show={showModal} pokemonImage={image} setShow={controlModalFechar}></Pokemodal>
                     </PokeDiv>
                 ):(
                     <PokeDiv>
